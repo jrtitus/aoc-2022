@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	// read file and load caloriesPerElf
+	// read file and load games
 	dat, err := os.ReadFile("input.txt")
 	if err != nil {
 		panic(err)
@@ -24,28 +24,52 @@ func main() {
 	fmt.Printf("total score is %d", totalScore)
 }
 
-var scores map[string]int = map[string]int{
-	"X": 1,
-	"Y": 2,
-	"Z": 3,
+func getWinningMove(opp string) int {
+	if opp == "A" {
+		return 2
+	}
+	if opp == "B" {
+		return 3
+	}
+	return 1
+}
+
+func getLosingMove(opp string) int {
+	if opp == "A" {
+		return 3
+	}
+	if opp == "B" {
+		return 1
+	}
+	return 2
+}
+
+func getDrawMove(opp string) int {
+	if opp == "A" {
+		return 1
+	}
+	if opp == "B" {
+		return 2
+	}
+	return 3
 }
 
 func calculateGame(g []string) int {
 	// A B C
 	opp := g[0]
-	// X Y Z
-	me := g[1]
+	// X - Lose; Y - Draw; Z - Win
+	outcome := g[1]
 
 	// Win condition
-	if opp == "A" && me == "Y" || opp == "B" && me == "Z" || opp == "C" && me == "X" {
-		return 6 + scores[me]
+	if outcome == "Z" {
+		return 6 + getWinningMove(opp)
 	}
 
 	// Loss condition
-	if opp == "A" && me == "Z" || opp == "B" && me == "X" || opp == "C" && me == "Y" {
-		return scores[me]
+	if outcome == "X" {
+		return getLosingMove(opp)
 	}
 
 	// Draw condition
-	return 3 + scores[me]
+	return 3 + getDrawMove(opp)
 }
