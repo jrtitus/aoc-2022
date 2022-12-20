@@ -14,7 +14,6 @@ var caloriesPerElf []int = make([]int, 0)
 func appendSetMax(sum int) {
 	// store sum
 	caloriesPerElf = append(caloriesPerElf, sum)
-	sort.Ints(caloriesPerElf)
 }
 
 func main() {
@@ -35,6 +34,9 @@ func main() {
 		}
 	}
 	appendSetMax(sum)
+
+	// Only sort once
+	sort.Ints(caloriesPerElf)
 
 	elves := len(caloriesPerElf)
 	fmt.Printf("there are a total of %d elves\n", elves)
