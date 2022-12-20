@@ -3,21 +3,18 @@ package main
 import (
 	"fmt"
 	"os"
+	"sort"
 	"strings"
 
 	"github.com/spf13/cast"
 )
 
 var caloriesPerElf []int = make([]int, 0)
-var max int = 0
 
 func appendSetMax(sum int) {
 	// store sum
 	caloriesPerElf = append(caloriesPerElf, sum)
-	// determine max
-	if sum > max {
-		max = sum
-	}
+	sort.Ints(caloriesPerElf)
 }
 
 func main() {
@@ -39,6 +36,9 @@ func main() {
 	}
 	appendSetMax(sum)
 
-	fmt.Printf("there are a total of %d elves\n", len(caloriesPerElf))
-	fmt.Printf("max calories carried is %d", max)
+	elves := len(caloriesPerElf)
+	fmt.Printf("there are a total of %d elves\n", elves)
+
+	topThree := caloriesPerElf[elves-1] + caloriesPerElf[elves-2] + caloriesPerElf[elves-3]
+	fmt.Printf("the 3 elves carrying the most calories carry a total of %d", topThree)
 }
