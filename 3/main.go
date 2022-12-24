@@ -6,19 +6,14 @@ import (
 	"strings"
 )
 
-type Compartment struct {
-	items string
-}
-
-func newCompartment(items string) Compartment {
-	return Compartment{items: items}
-}
-
-func (c Compartment) findDuplicate(alt Compartment) rune {
-	for _, char := range c.items {
-		for _, altChar := range alt.items {
-			if char == altChar {
-				return char
+// I hate this function so much
+func findCommonItem(sacks ...string) rune {
+	for _, aChar := range sacks[0] {
+		for _, bChar := range sacks[1] {
+			for _, cChar := range sacks[2] {
+				if aChar == bChar && bChar == cChar {
+					return aChar
+				}
 			}
 		}
 	}
@@ -35,20 +30,20 @@ func main() {
 	sacks := strings.Split(string(dat), "\n")
 
 	var sum int32
-	// items in each compartment
-	for _, sack := range sacks {
-		c1, c2 := splitItems(sack)
-		dup := c1.findDuplicate(c2)
+	grp := make([]string, 0)
 
-		sum += convert(dup)
+	for _, sack := range sacks {
+		grp = append(grp, sack)
+
+		if len(grp) == 3 {
+			common := findCommonItem(grp...)
+			sum += convert(common)
+			// new group
+			grp = make([]string, 0)
+		}
 	}
 
-	fmt.Printf("the sum of all duplicate items is %v", sum)
-}
-
-func splitItems(input string) (Compartment, Compartment) {
-	half := len(input) / 2
-	return newCompartment(input[:half]), newCompartment(input[half:])
+	fmt.Printf("the sum of all common items is %v", sum)
 }
 
 func convert(charCode rune) int32 {
