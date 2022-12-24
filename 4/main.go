@@ -31,7 +31,7 @@ func main() {
 		}
 		pairs := strings.Split(pair, ",")
 		l1, h1, l2, h2 := getLowsAndHighs(pairs)
-		if l1 >= l2 && h1 <= h2 || l2 >= l1 && h2 <= h1 {
+		if l1 >= l2 && l1 <= h2 || l2 >= l1 && l2 <= h1 {
 			count += 1
 		}
 	}
